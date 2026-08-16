@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Backend Development — Learning Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-0:#081824;
+    --ink-1:#0c2436;
+    --ink-2:#123a52;
+    --ink-3:#1a4d6d;
+    --line:#3f7594;
+    --line-soft:#2a566f;
+    --paper:#e8f4fa;
+    --paper-dim:#9fc4d8;
+    --amber:#ffb84d;
+    --amber-dim:#b5843a;
+    --ok:#7fd9a8;
+    --font-head:'IBM Plex Mono', monospace;
+    --font-body:'IBM Plex Sans', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(126,200,227,0.055) 28px),
+      repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(126,200,227,0.055) 28px),
+      radial-gradient(ellipse at 20% 0%, var(--ink-1) 0%, var(--ink-0) 65%);
+    background-color:var(--ink-0);
+    color:var(--paper);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  .sheet{
+    max-width:920px;
+    margin:0 auto;
+    padding:56px 28px 120px;
+  }
+
+  /* ---------- Title block ---------- */
+  .titleblock{
+    border:1.5px solid var(--line);
+    background:linear-gradient(180deg, rgba(26,77,109,0.35), rgba(18,58,82,0.15));
+    padding:0;
+    margin-bottom:44px;
+    animation:fadeUp .6s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  .titleblock-top{
+    padding:34px 32px 26px;
+    border-bottom:1.5px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--font-head);
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin:0 0 10px;
+  }
+  h1.doc-title{
+    font-family:var(--font-head);
+    font-weight:700;
+    font-size:clamp(28px, 5vw, 42px);
+    letter-spacing:-0.01em;
+    margin:0 0 8px;
+    color:var(--paper);
+  }
+  .doc-sub{
+    font-size:15px;
+    color:var(--paper-dim);
+    margin:0;
+    max-width:56ch;
+  }
+  .titleblock-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+  }
+  .tb-cell{
+    padding:14px 18px;
+    border-right:1px solid var(--line-soft);
+    font-family:var(--font-head);
+  }
+  .tb-cell:last-child{border-right:none;}
+  .tb-label{
+    font-size:9px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--paper-dim);
+    margin-bottom:4px;
+  }
+  .tb-value{
+    font-size:13px;
+    color:var(--amber);
+    font-weight:600;
+  }
+  @media (max-width:640px){
+    .titleblock-grid{grid-template-columns:repeat(2, 1fr);}
+    .tb-cell:nth-child(2){border-right:none;}
+  }
+
+  /* ---------- Section scaffolding ---------- */
+  section{margin-bottom:56px;}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:20px;
+  }
+  .sec-num{
+    font-family:var(--font-head);
+    font-size:12px;
+    color:var(--amber-dim);
+    border:1px solid var(--line-soft);
+    padding:2px 7px;
+    white-space:nowrap;
+  }
+  h2{
+    font-family:var(--font-head);
+    font-size:20px;
+    font-weight:600;
+    color:var(--paper);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .sec-rule{
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, var(--line-soft), transparent);
+    margin-top:8px;
+  }
+  h3{
+    font-family:var(--font-head);
+    font-size:14px;
+    color:var(--amber);
+    margin:26px 0 10px;
+    font-weight:600;
+  }
+  p{color:var(--paper-dim); margin:0 0 12px;}
+  strong{color:var(--paper);}
+
+  .note{
+    border-left:3px solid var(--amber-dim);
+    background:rgba(255,184,77,0.05);
+    padding:14px 18px;
+    font-size:14.5px;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- Phase rail ---------- */
+  .rail{
+    position:relative;
+    padding-left:34px;
+  }
+  .rail::before{
+    content:'';
+    position:absolute;
+    left:9px; top:6px; bottom:6px;
+    width:2px;
+    background:linear-gradient(180deg, var(--amber), var(--line-soft) 8%, var(--line-soft) 92%, transparent);
+  }
+  .phase{
+    position:relative;
+    padding:0 0 26px;
+  }
+  .phase:last-child{padding-bottom:0;}
+  .phase::before{
+    content:'';
+    position:absolute;
+    left:-34px; top:4px;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--ink-0);
+    border:2px solid var(--line);
+  }
+  .phase.current::before{
+    background:var(--amber);
+    border-color:var(--amber);
+    box-shadow:0 0 0 4px rgba(255,184,77,0.18);
+  }
+  .phase-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:5px;
+  }
+  .phase-id{
+    font-family:var(--font-head);
+    font-size:11px;
+    color:var(--amber-dim);
+  }
+  .phase.current .phase-id{color:var(--amber);}
+  .phase-name{
+    font-family:var(--font-head);
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--paper);
+  }
+  .badge{
+    font-family:var(--font-head);
+    font-size:9.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:2px 7px;
+    border:1px solid var(--amber);
+    color:var(--amber);
+  }
+  .phase-topics{
+    font-size:13px;
+    color:var(--paper-dim);
+    opacity:.85;
+  }
+
+  /* ---------- Long term projects ---------- */
+  .proj-line{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    overflow-x:auto;
+    padding:10px 0 16px;
+  }
+  .proj-node{
+    flex:0 0 auto;
+    font-family:var(--font-head);
+    font-size:12.5px;
+    color:var(--paper);
+    border:1px solid var(--line);
+    padding:9px 14px;
+    background:var(--ink-1);
+    white-space:nowrap;
+  }
+  .proj-node:first-child{border-color:var(--amber); color:var(--amber);}
+  .proj-arrow{color:var(--line); flex:0 0 auto;}
+
+  /* ---------- Table (spec style) ---------- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    margin:6px 0 4px;
+  }
+  th{
+    font-family:var(--font-head);
+    text-align:left;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--amber-dim);
+    padding:9px 12px;
+    border-bottom:1.5px solid var(--line);
+  }
+  td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--line-soft);
+    color:var(--paper-dim);
+  }
+  td:first-child{color:var(--amber); font-family:var(--font-head); font-size:12.5px;}
+  tr:hover td{background:rgba(126,200,227,0.04);}
+
+  /* ---------- File tree ---------- */
+  .tree{
+    font-family:var(--font-head);
+    font-size:13px;
+    color:var(--paper-dim);
+    background:var(--ink-1);
+    border:1px solid var(--line-soft);
+    padding:16px 20px;
+    line-height:1.9;
+    overflow-x:auto;
+  }
+  .tree .dir{color:var(--amber);}
+  .tree .file{color:var(--paper);}
+
+  /* ---------- Checklist ---------- */
+  ul.check{list-style:none; margin:0; padding:0;}
+  ul.check li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14px;
+    color:var(--paper-dim);
+    padding:6px 0;
+  }
+  ul.check li::before{
+    content:'▢';
+    color:var(--line);
+    font-size:14px;
+    line-height:1.5;
+  }
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:8px 32px;}
+  @media(max-width:640px){.cols2{grid-template-columns:1fr;}}
+
+  /* ---------- Teaching method ---------- */
+  .method{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .method-step{
+    flex:1 1 100px;
+    border:1px solid var(--line-soft);
+    padding:12px 10px;
+    text-align:center;
+    background:var(--ink-1);
+  }
+  .method-step .n{
+    font-family:var(--font-head);
+    color:var(--amber);
+    font-size:16px;
+    display:block;
+    margin-bottom:4px;
+  }
+  .method-step .t{font-size:12px; color:var(--paper-dim);}
+
+  /* ---------- Lesson blocks ---------- */
+  .lesson-card{
+    border:1px solid var(--line-soft);
+    background:var(--ink-1);
+    padding:22px 26px;
+    margin-bottom:18px;
+  }
+  code, .code{
+    font-family:var(--font-head);
+    font-size:12.5px;
+    background:var(--ink-2);
+    color:var(--ok);
+    padding:2px 6px;
+    border-radius:2px;
+  }
+  pre{
+    font-family:var(--font-head);
+    font-size:12.5px;
+    color:var(--ok);
+    background:var(--ink-2);
+    border:1px solid var(--line-soft);
+    padding:14px 16px;
+    overflow-x:auto;
+    margin:0 0 4px;
+  }
+
+  .analogy{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:14px;
+    margin:18px 0 6px;
+  }
+  .analogy-box{
+    border:1px dashed var(--line);
+    padding:16px;
+    text-align:center;
+  }
+  .analogy-box .k{font-family:var(--font-head); color:var(--amber); font-size:13px; display:block; margin-bottom:4px;}
+  .analogy-box .v{font-size:12.5px; color:var(--paper-dim);}
+  .analogy-vs{font-family:var(--font-head); color:var(--paper-dim); font-size:11px;}
+  @media(max-width:600px){.analogy{grid-template-columns:1fr;} .analogy-vs{justify-self:center;}}
+
+  /* ---------- Lifecycle diagram (signature element) ---------- */
+  .lifecycle{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 10px 4px;
+  }
+  .lc-node{
+    font-family:var(--font-head);
+    font-size:12.5px;
+    color:var(--paper);
+    border:1px solid var(--line);
+    background:var(--ink-2);
+    padding:10px 20px;
+    min-width:180px;
+    text-align:center;
+    position:relative;
+  }
+  .lc-node.peak{border-color:var(--amber); color:var(--amber);}
+  .lc-connector{
+    width:1px;
+    height:22px;
+    background:var(--line);
+    position:relative;
+  }
+  .lc-connector::after{
+    content:'';
+    position:absolute;
+    bottom:-1px; left:50%;
+    transform:translateX(-50%);
+    border-left:4px solid transparent;
+    border-right:4px solid transparent;
+    border-top:6px solid var(--line);
+  }
+
+  /* ---------- Challenge worksheet ---------- */
+  .worksheet{
+    border:1px solid var(--amber-dim);
+    background:rgba(255,184,77,0.04);
+  }
+  .worksheet .wq{
+    padding:16px 22px;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  .worksheet .wq:last-child{border-bottom:none;}
+  .wq-n{font-family:var(--font-head); color:var(--amber); font-size:12.5px; margin-right:8px;}
+  .wq-t{color:var(--paper); font-size:14.5px; font-weight:500;}
+
+  footer{
+    margin-top:80px;
+    padding-top:20px;
+    border-top:1px solid var(--line-soft);
+    font-family:var(--font-head);
+    font-size:11px;
+    color:var(--paper-dim);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="titleblock">
+    <div class="titleblock-top">
+      <p class="eyebrow">Curriculum Document · Rev. 01</p>
+      <h1 class="doc-title">Backend Development<br>Learning Plan</h1>
+      <p class="doc-sub">Node.js → Express → MongoDB, built through progressive implementation, code review, and project-based learning.</p>
+    </div>
+    <div class="titleblock-grid">
+      <div class="tb-cell"><div class="tb-label">Learner</div><div class="tb-value">Sahadat</div></div>
+      <div class="tb-cell"><div class="tb-label">Track</div><div class="tb-value">Express Core</div></div>
+      <div class="tb-cell"><div class="tb-label">Phases</div><div class="tb-value">00 — 17</div></div>
+      <div class="tb-cell"><div class="tb-label">Status</div><div class="tb-value">Phase 00 · Lesson 01</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="note">
+      <strong>Mentor goal —</strong> not to follow tutorials, but to build the ability to independently understand backend requirements, design API architecture, build production-quality APIs, debug, test, and deploy — and to make sound engineering decisions along the way.
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="sec-head"><span class="sec-num">§01</span><h2>Phase Roadmap</h2><span class="sec-rule"></span></div>
+    <div class="rail">
+
+      <div class="phase current">
+        <div class="phase-head"><span class="phase-id">PH.00</span><span class="phase-name">Foundation — Express Core</span><span class="badge">In Progress</span></div>
+        <div class="phase-topics">HTTP revision, client vs server, request lifecycle, Express architecture, install, first server, nodemon, TypeScript integration, tsconfig, env vars, npm scripts</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.01</span><span class="phase-name">Express Fundamentals</span></div>
+        <div class="phase-topics">Routing, request/response, status codes, JSON API, query &amp; route params, request body, middleware, error handling · <em>Mini project: Todo API (memory-based)</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.02</span><span class="phase-name">REST API Design</span></div>
+        <div class="phase-topics">REST principles, resource naming, HTTP methods, idempotency, validation, versioning, pagination, filtering, sorting · <em>Project: Todo API v2</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.03</span><span class="phase-name">Project Architecture</span></div>
+        <div class="phase-topics">Folder structure, MVC, service layer, controller, router, utils, config, logger, custom error classes</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.04</span><span class="phase-name">MongoDB</span></div>
+        <div class="phase-topics">Documents, collections, BSON, CRUD, indexes, aggregation basics</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.05</span><span class="phase-name">Mongoose</span></div>
+        <div class="phase-topics">Schema, model, validation, hooks, virtuals, populate, middleware · <em>Project: Todo API with database</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.06</span><span class="phase-name">Data Modeling</span></div>
+        <div class="phase-topics">1:1, 1:N, N:N relationships, embedding vs referencing</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.07</span><span class="phase-name">Authentication</span></div>
+        <div class="phase-topics">Password hashing, JWT, access &amp; refresh tokens, cookies, sessions, email verification, password reset · <em>Project: Authentication API</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.08</span><span class="phase-name">Authorization</span></div>
+        <div class="phase-topics">RBAC, permissions, policies, resource ownership · <em>Project: Blog API</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.09</span><span class="phase-name">File Handling</span></div>
+        <div class="phase-topics">Multer, local storage, Cloudinary / S3, image optimization · <em>Project: Photo Backend</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.10</span><span class="phase-name">Video Handling</span></div>
+        <div class="phase-topics">Video upload, streaming, chunked uploads, video processing · <em>Project: Video Backend</em></div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.11</span><span class="phase-name">Redis</span></div>
+        <div class="phase-topics">Caching, session storage, rate limiting, queue introduction</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.12</span><span class="phase-name">Testing</span></div>
+        <div class="phase-topics">Unit &amp; integration testing, Supertest, Jest / Vitest</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.13</span><span class="phase-name">API Documentation</span></div>
+        <div class="phase-topics">Swagger, OpenAPI, documentation practices</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.14</span><span class="phase-name">Docker</span></div>
+        <div class="phase-topics">Dockerfile, Docker Compose, MongoDB container, environment configuration</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.15</span><span class="phase-name">Deployment</span></div>
+        <div class="phase-topics">VPS, Nginx, PM2, CI/CD basics, production secrets</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.16</span><span class="phase-name">Production Engineering</span></div>
+        <div class="phase-topics">Structured logging, monitoring, security, rate limiting, Helmet, CORS, compression</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><span class="phase-id">PH.17</span><span class="phase-name">Basic System Design</span></div>
+        <div class="phase-topics">Scalability, load balancing, CDN, caching, database scaling</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head"><span class="sec-num">§02</span><h2>Long-Term Projects</h2><span class="sec-rule"></span></div>
+    <p>Complexity increases progressively across six major builds.</p>
+    <div class="proj-line">
+      <div class="proj-node">Todo API</div><span class="proj-arrow">→</span>
+      <div class="proj-node">Blog API</div><span class="proj-arrow">→</span>
+      <div class="proj-node">Auth Service</div><span class="proj-arrow">→</span>
+      <div class="proj-node">Social Backend</div><span class="proj-arrow">→</span>
+      <div class="proj-node">Photo / Video Backend</div><span class="proj-arrow">→</span>
+      <div class="proj-node">E-commerce Backend</div>
+    </div>
+  </section>
+
+  <section id="todo-spec">
+    <div class="sec-head"><span class="sec-num">§03</span><h2>First Project Plan — Todo API</h2><span class="sec-rule"></span></div>
+    <p><strong>Goal —</strong> build a production-style REST API that allows users to manage Todo items, expanding from an in-memory API through validation, MongoDB, and finally authentication.</p>
+
+    <h3>Endpoints</h3>
+    <table>
+      <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+      <tr><td>GET</td><td>/todos</td><td>Get all Todos</td></tr>
+      <tr><td>GET</td><td>/todos/:id</td><td>Get a specific Todo</td></tr>
+      <tr><td>POST</td><td>/todos</td><td>Create a Todo</td></tr>
+      <tr><td>PATCH</td><td>/todos/:id</td><td>Update a Todo</td></tr>
+      <tr><td>DELETE</td><td>/todos/:id</td><td>Delete a Todo</td></tr>
+    </table>
+
+    <h3>Data Model</h3>
+    <div class="tree">Todo<br>├─ id<br>├─ title<br>├─ description<br>├─ completed<br>├─ createdAt<br>└─ updatedAt</div>
+
+    <h3>Planned Folder Architecture</h3>
+    <p style="font-size:13px;">Introduced later, once abstraction solves a real problem — not before.</p>
+    <div class="tree">
+<span class="dir">src/</span><br>
+&nbsp;&nbsp;<span class="dir">app/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">controllers/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">services/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">routes/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">middlewares/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">models/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">interfaces/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">utils/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">config/</span><br>
+&nbsp;&nbsp;<span class="file">server.ts</span><br>
+&nbsp;&nbsp;<span class="file">app.ts</span>
+    </div>
+
+    <div class="cols2" style="margin-top:22px;">
+      <div>
+        <h3 style="margin-top:0;">Validation Requirements</h3>
+        <ul class="check">
+          <li><code>title</code> is required</li>
+          <li><code>title</code> has an appropriate length</li>
+          <li><code>completed</code> must be a boolean</li>
+          <li>Invalid IDs are handled correctly</li>
+          <li>Invalid request bodies are rejected</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin-top:0;">Security Requirements</h3>
+        <ul class="check">
+          <li>Input validation</li>
+          <li>Helmet</li>
+          <li>CORS configuration</li>
+          <li>Rate limiting</li>
+          <li>Authentication</li>
+          <li>Authorization</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="teaching-method">
+    <div class="sec-head"><span class="sec-num">§04</span><h2>Teaching Method</h2><span class="sec-rule"></span></div>
+    <div class="method">
+      <div class="method-step"><span class="n">1</span><span class="t">Concept</span></div>
+      <div class="method-step"><span class="n">2</span><span class="t">Real-world analogy</span></div>
+      <div class="method-step"><span class="n">3</span><span class="t">Backend example</span></div>
+      <div class="method-step"><span class="n">4</span><span class="t">Mini challenge</span></div>
+      <div class="method-step"><span class="n">5</span><span class="t">Implementation</span></div>
+      <div class="method-step"><span class="n">6</span><span class="t">Code review</span></div>
+      <div class="method-step"><span class="n">7</span><span class="t">Quiz</span></div>
+      <div class="method-step"><span class="n">8</span><span class="t">Summary</span></div>
+    </div>
+  </section>
+
+  <section id="lesson1">
+    <div class="sec-head"><span class="sec-num">§05</span><h2>Lesson 01 — Express.js: What and Why?</h2><span class="sec-rule"></span></div>
+
+    <div class="lesson-card">
+      <h3 style="margin-top:0;">The Problem</h3>
+      <p>Consider a food delivery application. The frontend sends requests like:</p>
+      <pre>GET /restaurants
+POST /orders</pre>
+      <p>The backend has to decide who receives each request, which route handles it, which function runs, how the response is shaped, and what happens on error. Node's built-in <code>http</code> module can do this manually — but routing, middleware, and error handling become repetitive fast as an app grows.</p>
+      <p><strong>Express.js</strong> is a lightweight framework that organizes those concerns, so the focus shifts back to business logic.</p>
+    </div>
+
+    <div class="lesson-card">
+      <h3 style="margin-top:0;">Simple Analogy</h3>
+      <div class="analogy">
+        <div class="analogy-box"><span class="k">Node.js</span><span class="v">An empty piece of land</span></div>
+        <div class="analogy-vs">VS</div>
+        <div class="analogy-box"><span class="k">Express.js</span><span class="v">A structured framework built on that land</span></div>
+      </div>
+      <p style="margin-top:14px;">You <em>can</em> build everything yourself on raw Node — Express just gives you practical structure and utilities for the common web-server work.</p>
+    </div>
+
+    <div class="lesson-card">
+      <h3 style="margin-top:0;">Request Lifecycle</h3>
+      <div class="lifecycle">
+        <div class="lc-node">Client</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">HTTP Request</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node peak">Express App</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">Middleware</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">Route Handler</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">Business Logic</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">Response</div>
+        <div class="lc-connector"></div>
+        <div class="lc-node">Client</div>
+      </div>
+      <p style="text-align:center; font-size:12.5px; margin-top:14px;">Each stage of this pipeline is explored in depth across the Express phase.</p>
+    </div>
+
+    <h3>Mini Challenge</h3>
+    <p style="font-size:13.5px;">Answer in your own words before moving to the next lesson.</p>
+    <div class="lesson-card worksheet" style="padding:0;">
+      <div class="wq"><span class="wq-n">01</span><span class="wq-t">What is the main difference between Node.js and Express.js?</span></div>
+      <div class="wq"><span class="wq-n">02</span><span class="wq-t">Without Express, what extra work would a backend dev need to do when building an HTTP API on raw Node.js?</span></div>
+      <div class="wq"><span class="wq-n">03</span><span class="wq-t">When a browser sends an HTTP request, what steps happen before the response returns? Describe the flow.</span></div>
+      <div class="wq"><span class="wq-n">04</span><span class="wq-t">Why is using a framework generally useful for a production backend?</span></div>
+    </div>
+
+    <h3>Progress Tracker</h3>
+    <div class="cols2">
+      <div>
+        <div class="tb-label" style="margin-bottom:8px; color:var(--ok);">✓ Learned</div>
+        <ul class="check">
+          <li>Purpose of Express.js</li>
+          <li>Node.js vs Express.js</li>
+          <li>High-level HTTP request lifecycle</li>
+          <li>Why frameworks are useful</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tb-label" style="margin-bottom:8px;">— Not Yet Covered</div>
+        <ul class="check">
+          <li>Creating an Express application</li>
+          <li><code>app.listen()</code></li>
+          <li>Express routing</li>
+          <li>Request &amp; Response objects</li>
+          <li>Middleware</li>
+          <li>Error handling</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:24px;">
+      <strong>Next lesson —</strong> Express Setup + First Server, implemented in TypeScript, with every important line explained for both what it does and why it's needed. Prerequisite: complete the four Mini Challenge questions above.
+    </div>
+  </section>
+
+  <footer>
+    <span>BACKEND-PLAN / REV.01</span>
+    <span>NODE.JS → EXPRESS → MONGODB</span>
+    <span>SHEET 1 OF 1</span>
+  </footer>
+
+</div>
+</body>
+</html>
